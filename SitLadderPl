@@ -1,0 +1,31 @@
+package com.example.sitladderplugin;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.metadata.FixedMetadataValue;
+
+public class SitLadderPlugin implements Listener {
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        Block block = event.getClickedBlock();
+        if (block.getType() == Material.LADDER) {
+            Player player = event.getPlayer();
+
+            // Check if the ladder is facing the correct way
+            if (block.getRelative(0, 1, 0).getType() == Material.AIR) {
+
+                // Set the metadata for the ladder
+                block.setMetadata("isChair", new FixedMetadataValue(this, true));
+
+                // Set the player's sitting position
+                player.setSit(block.getLocation());
+            }
+        }
+    }
+}
